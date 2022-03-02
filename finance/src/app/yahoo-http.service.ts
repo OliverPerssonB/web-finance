@@ -6,7 +6,7 @@ import { catchError, map, tap } from 'rxjs';
   providedIn: 'root'
 })
 export class YahooHttpService {
-  yahooUrl = "https://yfapi.net/"
+  yahooUrl = "https://yfapi.net"
   apiKeys = {
     oli: "QMzocjYt7553Y395S5Z0B5yTfjromREd6N4Ua7ce",
     pat: "jzdoOBxZgw9xCkHYCjA17VN1kOUXFdZ6CVYAUo7e",
@@ -16,24 +16,26 @@ export class YahooHttpService {
 
   constructor(private http: HttpClient) { }
 
+
   getMarketSummary() {
-    let url = this.yahooUrl + "v6/finance/quote/marketSummary";
-
-
+    let url = this.yahooUrl + "/v6/finance/quote/marketSummary";
     let header = new HttpHeaders();
     header = header.append("X-API-KEY", this.apiKeys.oli);
-
     let params = new HttpParams();
     params = params.append("lang", "en")
     params = params.append("region", "GB")
-
-    console.log(header);
-    console.log(params);
-
     console.log("sending http");
-    let res = this.http.get(url, { headers: header, params: params });
-    console.log(res);
-    return res;
+    return this.http.get(url, { headers: header, params: params });
   }
 
+  getStock() {
+    let url = this.yahooUrl + "/v8/finance/spark";
+    let header = new HttpHeaders();
+    header = header.append("X-API-KEY", this.apiKeys.oli);
+    let params = new HttpParams();
+    params = params.append("interval", "1d");
+    params = params.append("range", "1mo");
+    params = params.append("symbols", "AAPL");
+    return this.http.get(url, { headers: header, params: params });
+  }
 }
