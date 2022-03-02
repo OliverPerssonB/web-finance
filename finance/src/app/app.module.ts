@@ -4,10 +4,16 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { OverviewComponent } from './overview/overview.component';
+import { ChartsComponent } from './charts/charts.component';
+import { PickStocksComponent } from './pick-stocks/pick-stocks.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    OverviewComponent,
+    ChartsComponent,
+    PickStocksComponent
   ],
   imports: [
     BrowserModule,
