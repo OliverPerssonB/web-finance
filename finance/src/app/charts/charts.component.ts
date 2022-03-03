@@ -17,9 +17,9 @@ export class ChartsComponent implements OnInit {
     private width: number = 700 - this.margin.left - this.margin.right;
     private height: number = 300 - this.margin.top - this.margin.bottom;
     private data;
-    private msData;
+    private ys: number[];
     symbol: string;
-    input: number = 0;
+    input: number = 1;
 
     constructor(private server: YahooHttpService) { }
 
@@ -33,31 +33,38 @@ export class ChartsComponent implements OnInit {
 
         this.symbol = Object.keys(this.rawData)[0]
         this.data = this.formatData(this.rawData.AAPL)
+        console.log(this.data)
+        // @ts-ignore
+        this.ys = Array.from(this.data).map(d => d.y)
         this.createSvg()
         this.drawLineChart(this.data)
     }
 
-    updateData(input: number) {
-        // console.log(this.data)
-        let ys: number[] = this.data.map(d => d.y)
-        this.msData = this.simpleMovingAverage(ys, this.input)
+    updateData() {
+        let ysNew = this.movingAverage(this.ys, this.input)
+        let smoothData = Array.from(this.data)
+        for (let i = 0; i < smoothData.length; i++) {
+            // @ts-ignore
+            smoothData[i].y = ysNew[i]
+        }
+        this.updateChart(smoothData)
     }
 
-    private simpleMovingAverage(values: number[], k: number): number[] {
-        let movingAverage: number[] = [];
+    private movingAverage(values: number[], k: number): number[] {
+        let result: number[] = [];
         for (let i = 0; i < values.length; i++) {
             let sum = 0;
             let n_entries = 0;
-            for (let j = i - k; j <= i; j++) {
-                if (j >= 0) {
+            let end = k % 2 == 0 ? i + Math.floor(k / 2) - 1 : i + Math.floor(k / 2)
+            for (let j = i - Math.floor(k / 2); j <= end; j++) {
+                if (j >= 0 && j < values.length) {
                     sum += values[j]
                     n_entries += 1
                 }
             }
-            movingAverage.push(Number((sum / n_entries).toFixed(2)))
+            result.push(Number((sum / n_entries).toFixed(2)))
         }
-        console.log(movingAverage)
-        return movingAverage
+        return result
     }
 
     private formatData(data: any) {
@@ -80,19 +87,38 @@ export class ChartsComponent implements OnInit {
     }
 
     private drawLineChart(data: any[]): void {
-        let n = data.length
+        // Update line, area, and markers
+        let { xAxis, yAxis } = this.updateChart(data);
+
+        // Add x- and y-axis and keep them constant, i.e. don't update when data changes
+        this.svg.append('g')
+            .attr('class', 'x axis')
+            .attr('transform', `translate(0, ${this.height})`)
+            .call(xAxis)
+        let ax = this.svg.append('g')
+            .attr('class', 'y axis')
+            .attr('transform', `translate(${this.width}, 0)`)
+            .call(yAxis)
+        ax.selectAll('path')
+            .style('stroke', 'none')
+        this.svg.selectAll('text')
+            .attr('font-size', '10px')
+    }
+
+    private updateChart(data: any[]) {
+        let n = data.length;
 
         // Scales
         let xTimeScale = d3.scaleTime()
             .domain(d3.extent(data, d => d.x.getTime()))
-            .range([0, this.width])
+            .range([0, this.width]);
         // .nice()
         let xScale = d3.scaleLinear()
             .domain([0, n - 1])
-            .range([0, this.width])
+            .range([0, this.width]);
         let yScale = d3.scaleLinear()
             .domain(d3.extent(data, d => d.y))
-            .range([this.height, 0])
+            .range([this.height, 0]);
 
         // Define axes, line, and area under curve
         let xAxis = d3.axisBottom(xTimeScale)
@@ -100,58 +126,82 @@ export class ChartsComponent implements OnInit {
             .tickSizeOuter(0)
             .tickPadding(5)
             .ticks(d3.timeWeek)
-            .tickFormat(d3.timeFormat('%b %d'))
+            .tickFormat(d3.timeFormat('%b %d'));
 
         let yAxis = d3.axisLeft(yScale)
             .ticks(4)
             .tickSizeInner(0)
             .tickSizeOuter(0)
-            .tickPadding(5)
-
-        // @ts-ignore
-        let line = d3.line().x((d, i) => xScale(i)).y(d => yScale(d.y))
-
-        // @ts-ignore
-        let area = d3.area().x((d, i) => xScale(i)).y0(this.height).y1(d => yScale(d.y))
+            .tickPadding(5);
 
         // Add line, area under curve, and markers to svg
-        this.svg.append('path')
-            .attr('class', 'area')
-            .attr('d', area(data))
-            .attr('fill', '#751fa2')
-            .attr('opacity', 0.1)
+        // @ts-ignore
+        let line = d3.line()
+            // @ts-ignore
+            .x((d, i) => xTimeScale(d.x))
+            // @ts-ignore
+            .y(d => yScale(d.y));
+        // @ts-ignore
+        let area = d3.area()
+            // @ts-ignore
+            .x((d, i) => xTimeScale(d.x))
+            .y0(this.height)
+            // @ts-ignore
+            .y1(d => yScale(d.y));
 
-        this.svg.append('path')
+        // const transitionTime = 3000;
+        const t = d3.transition().duration(300).ease(d3.easeLinear)
+        this.svg.selectAll('.line')
+            .data([data])
+            .join('path')
+            .transition(t)
             .attr('class', 'line')
             .attr('d', line(data))
             .attr('fill', 'none')
-            .attr('stroke', '#751fa2')
+            .attr('stroke', '#751fa2');
 
-        this.svg.selectAll('.marker')
-            .data(data)
-            .enter()
-            .append('circle')
-            .attr('cx', (d, i) => xScale(i))
+        this.svg.selectAll('.area')
+            .data([data])
+            .join('path')
+            .transition(t)
+            .attr('class', 'area')
+            .attr('d', area(data))
+            .attr('fill', '#751fa2')
+            .attr('opacity', 0.1);
+
+        const radius = 3
+        let circles = this.svg.selectAll('circle').data(data)
+        circles.join('circle').transition(t)
+            .attr('cx', (d, i) => xTimeScale(d.x))
             .attr('cy', d => yScale(d.y))
-            .attr('r', 1.5)
+            .attr('r', radius)
 
-        // Add axes to svg
-        this.svg.append('g')
-            .attr('class', 'x axis')
-            .attr('transform', `translate(0, ${this.height})`)
-            .call(xAxis)
+        circles.on('mouseover', function (event, d) {
+            d3.select(this)
+                .transition()
+                .duration(200)
+                .attr('r', radius * 2)
+                .attr('fill', 'yellow')
+                .attr('stroke', 'black')
 
-        let ax = this.svg.append('g')
-            .attr('class', 'y axis')
-            .attr('transform', `translate(${this.width}, 0)`)
-            .call(yAxis)
-        // Remove y axis, keep tick labels
-        ax.selectAll('path')
-            .style('stroke', 'none')
+            d3.select('#tooltip')
+                .transition()
+                .duration(200)
+                .style('left', event.x + "px")
+                .style('top', event.y + "px")
+                .select('#value')
+                .text('Price: $' + d.y + '\nDate: ' + d3.timeFormat('%b %d')(d.x))
+            d3.select('#tooltip').classed('hidden', false)
+        }).on('mouseout', function (event, d) {
+            d3.select(this)
+                .transition()
+                .duration(200)
+                .attr('r', radius)
+                .attr('fill', '#000000')
+            d3.select('#tooltip').classed('hidden', true)
+        })
 
-        // Tick label font size
-        this.svg.selectAll('text')
-            .attr('font-size', '10px')
+        return { xAxis, yAxis };
     }
 
     fetchData() {

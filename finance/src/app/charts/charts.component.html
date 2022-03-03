@@ -1,21 +1,25 @@
 <main>
   <div class="chart-container">
     <h1 class="chart-title">{{ symbol }}</h1>
-    <figure id="chart"></figure>
+    <figure id="chart">
+      <div id="tooltip" class="hidden">
+        <p><span id="value">100</span></p>
+      </div>
+    </figure>
   </div>
 
-  <div></div>
-  <div>
-    <label for="smoothing">Smoothing window (0-19)</label>
+  <div class="smoothing-container">
+    <label for="smoothing">Moving average window size: {{ input }} </label>
     <input
       id="smoothing"
       [(ngModel)]="input"
-      type="number"
-      value="0"
-      min="0"
+      type="range"
+      value="1"
+      min="1"
       max="19"
-      (ngModelChange)="updateData(input)"
+      (change)="updateData()"
     />
   </div>
-  <h3>{{ input }}</h3>
+  <!-- <h3>Window size: {{ input }}</h3> -->
+  <!-- <button class="smoothing-btn">Apply smoothing</button> -->
 </main>
