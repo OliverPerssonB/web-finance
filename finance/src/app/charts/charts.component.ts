@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { YahooHttpService } from '../yahoo-http.service';
 import { stockDataApple } from '../localData';
 import * as d3 from 'd3'
@@ -11,27 +11,53 @@ import { axisBottom, svg } from 'd3'
 })
 export class ChartsComponent implements OnInit {
     private subscription: any;
-    private data: any;
+    private rawData: any;
     private svg: any;
     private margin: any = { top: 20, right: 0, bottom: 50, left: 0 };
     private width: number = 700 - this.margin.left - this.margin.right;
     private height: number = 300 - this.margin.top - this.margin.bottom;
-    public symbol: string;
+    private data;
+    private msData;
+    symbol: string;
+    input: number = 0;
 
     constructor(private server: YahooHttpService) { }
 
     ngOnInit(): void {
-        this.data = stockDataApple;
+        this.rawData = stockDataApple;
         console.log("Data available:");
         console.log("-------------");
-        console.log(this.data);
+        console.log(this.rawData);
         console.log("-------------");
 
 
-        this.symbol = Object.keys(this.data)[0]
-        let formattedData = this.formatData(this.data.AAPL)
+        this.symbol = Object.keys(this.rawData)[0]
+        this.data = this.formatData(this.rawData.AAPL)
         this.createSvg()
-        this.drawLineChart(formattedData)
+        this.drawLineChart(this.data)
+    }
+
+    updateData(input: number) {
+        // console.log(this.data)
+        let ys: number[] = this.data.map(d => d.y)
+        this.msData = this.simpleMovingAverage(ys, this.input)
+    }
+
+    private simpleMovingAverage(values: number[], k: number): number[] {
+        let movingAverage: number[] = [];
+        for (let i = 0; i < values.length; i++) {
+            let sum = 0;
+            let n_entries = 0;
+            for (let j = i - k; j <= i; j++) {
+                if (j >= 0) {
+                    sum += values[j]
+                    n_entries += 1
+                }
+            }
+            movingAverage.push(Number((sum / n_entries).toFixed(2)))
+        }
+        console.log(movingAverage)
+        return movingAverage
     }
 
     private formatData(data: any) {

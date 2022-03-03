@@ -1,16 +1,13 @@
-#chart {
-  margin: 0;
+main {
+  width: 700px;
+  margin: 4rem auto;
 }
 
 .chart-container {
-  width: 700px;
-  margin: 2rem auto;
   display: flex;
   flex-direction: column;
 
-  padding: 2rem 0rem;
-  /* justify-content: center; */
-  /* align-items: center; */
+  padding: 2rem 0 0 0;
   background-color: #ffffff;
   border-radius: 0.5rem;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
@@ -22,4 +19,8 @@
   font-size: 2rem;
   font-weight: 500;
   /* color: #751fa2; */
+}
+
+#chart {
+  margin: 0;
 }
