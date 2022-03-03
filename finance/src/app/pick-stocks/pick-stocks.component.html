@@ -1,1 +1,16 @@
-<p>pick-stocks works!</p>
+<h1>Pick stocks</h1>
+<form [formGroup]="form" (ngSubmit)="submitForm()">
+  <div *ngFor="let symbol of availableStocks" >
+    <label>
+      <input
+        type="checkbox"
+        [value]="symbol"
+        [checked]="selectedStocks.includes(symbol)"
+        (change)="toggleStock(symbol)"
+      />
+      {{symbol}}
+    </label>
+  </div>
+  <!-- <button type="submit">Save</button> -->
+</form>
+
