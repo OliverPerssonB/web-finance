@@ -72,6 +72,10 @@ export class PickStocksComponent implements OnInit {
       console.log("Received data from server:");
       console.log("--------");
       console.log(obj);
+      // @ts-ignore
+      if (obj.spark) {
+        console.log("DID NOT FIND STOCK!!!");
+      }
       console.log("--------");
     });
   }
