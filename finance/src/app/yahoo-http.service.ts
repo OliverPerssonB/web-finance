@@ -36,9 +36,9 @@ export class YahooHttpService {
       let header = new HttpHeaders();
       header = header.append("X-API-KEY", this.apiKeys[Math.floor(Math.random() * this.apiKeys.length)]);
       let params = new HttpParams();
-      params = params.append("interval", "1d");
-      params = params.append("range", "1mo");
-      params = params.append("symbols", "AAPL");
+      params = params.append("interval", formatData.interval);
+      params = params.append("range", formatData.range);
+      params = params.append("symbols", formatData.symbol);
       return this.http.get(this.yahooStockUrl, { headers: header, params: params });
     } else {
       return this.getDefaultAppleStock();
