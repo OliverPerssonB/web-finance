@@ -17,11 +17,13 @@ export class OverviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.data = overviewData;
+    this.formatData();
     console.log("Data available:");
     console.log("-------------");
     console.log(this.data);
     console.log("-------------");
-    this.formatData();
+
+    // this.fetchData();
   }
 
   formatData() {
@@ -34,7 +36,7 @@ export class OverviewComponent implements OnInit {
   }
 
   handleExchangeObj(obj) {
-    return obj.fullExchangeName;
+    return obj;
   }
 
   fetchData() {
@@ -44,6 +46,8 @@ export class OverviewComponent implements OnInit {
       console.log("--------");
       console.log(obj);
       console.log("--------");
+      this.data = obj;
+      this.formatData();
     });
   }
 

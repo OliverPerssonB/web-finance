@@ -1,5 +1,11 @@
 <div>
-  <h1 *ngFor="let exchange of displayData">
-    <span>{{exchange}}</span>
-  </h1>
+  <div *ngFor="let exchange of displayData">
+    <h2>{{exchange.fullExchangeName}}</h2>
+    <p>market state: {{exchange.marketState | lowercase}}</p>
+    <p>price: {{exchange.regularMarketPrice.fmt}}</p>
+    <p>region: {{exchange.region}}</p>
+    <p>type: {{exchange.quoteType}}</p>
+    <p>time zone: {{exchange.exchangeTimezoneName}}</p>
+    <hr>
+  </div>
 </div>
