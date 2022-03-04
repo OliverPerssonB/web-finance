@@ -1,4 +1,6 @@
 <main>
+  <app-pick-stocks (newStockEvent)="updateStock($event)"></app-pick-stocks>
+  <hr />
   <div class="chart-container">
     <h1 class="chart-title">{{ symbol }}</h1>
     <figure id="chart">
@@ -9,16 +11,15 @@
   </div>
 
   <div class="smoothing-container">
-    <label for="smoothing">Moving average window size: {{ input }} </label>
     <input
       id="smoothing"
       [(ngModel)]="input"
       type="range"
       value="1"
       min="1"
-      max="19"
+      max="20"
       (change)="updateData()"
     />
+    <label for="smoothing">Moving average window size: {{ input }} </label>
   </div>
-  <app-pick-stocks (newStockEvent)="updateStock($event)"></app-pick-stocks>
 </main>

@@ -40,6 +40,7 @@ export class ChartsComponent implements OnInit {
     }
 
     updateStock(newStock) {
+        this.input = 1
         this.rawData = newStock;
         // this.data = this.formatData(this.rawData.AAPL)
         // this.updateData()
@@ -89,7 +90,7 @@ export class ChartsComponent implements OnInit {
     }
 
     private createSvg(): void {
-        if (this.svg) {
+        if (this.svg) { // Don't keep drawing new svgs when selecting new stock
             d3.select('svg').remove()
         }
         this.svg = d3.select('figure#chart')
@@ -139,7 +140,7 @@ export class ChartsComponent implements OnInit {
             .tickSizeInner(9)
             .tickSizeOuter(0)
             .tickPadding(5)
-            .ticks(d3.timeWeek)
+            .ticks(4)
             .tickFormat(d3.timeFormat('%b %d'));
 
         let yAxis = d3.axisLeft(yScale)
@@ -183,37 +184,40 @@ export class ChartsComponent implements OnInit {
             .attr('fill', '#751fa2')
             .attr('opacity', 0.1);
 
-        const radius = 3
-        let circles = this.svg.selectAll('circle').data(data)
-        circles.join('circle').transition(t)
-            .attr('cx', (d, i) => xTimeScale(d.x))
-            .attr('cy', d => yScale(d.y))
-            .attr('r', radius)
-
-        circles.on('mouseover', function (event, d) {
-            d3.select(this)
-                .transition()
-                .duration(200)
-                .attr('r', radius * 2)
-                .attr('fill', 'yellow')
-                .attr('stroke', 'black')
-
-            d3.select('#tooltip')
-                .transition()
-                .duration(200)
-                .style('left', event.x + "px")
-                .style('top', event.y + "px")
-                .select('#value')
-                .text('Price: $' + d.y + '\nDate: ' + d3.timeFormat('%b %d')(d.x))
-            d3.select('#tooltip').classed('hidden', false)
-        }).on('mouseout', function (event, d) {
-            d3.select(this)
-                .transition()
-                .duration(200)
+        if (data.length < 100) { // Markers clutter if too much data
+            const radius = 3
+            let circles = this.svg.selectAll('circle').data(data)
+            circles.join('circle').transition(t)
+                .attr('cx', (d, i) => xTimeScale(d.x))
+                .attr('cy', d => yScale(d.y))
                 .attr('r', radius)
-                .attr('fill', '#000000')
-            d3.select('#tooltip').classed('hidden', true)
-        })
+
+            circles.on('mouseover', function (event, d) {
+                d3.select(this)
+                    .transition()
+                    .duration(200)
+                    .attr('r', radius * 2)
+                    .attr('fill', 'yellow')
+                    .attr('stroke', 'black')
+
+                d3.select('#tooltip')
+                    // .transition()
+                    // .duration(200)
+                    .style('left', event.x + "px")
+                    .style('top', event.y + "px")
+                    .select('#value')
+                    // @ts-ignore
+                    .html(() => '<b>Price</b> $' + d.y + '<br><b>Date</b> ' + d3.timeFormat('%b %d')(d.x))
+                d3.select('#tooltip').classed('hidden', false)
+            }).on('mouseout', function (event, d) {
+                d3.select(this)
+                    .transition()
+                    .duration(200)
+                    .attr('r', radius)
+                    .attr('fill', '#000000')
+                d3.select('#tooltip').classed('hidden', true)
+            })
+        }
 
         return { xAxis, yAxis };
     }

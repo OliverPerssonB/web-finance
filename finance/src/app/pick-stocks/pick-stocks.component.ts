@@ -73,7 +73,6 @@ export class PickStocksComponent implements OnInit {
             console.log("Received data from server:");
             console.log("--------");
             console.log(obj);
-            console.log(typeof (obj))
             // @ts-ignore
             if (obj.spark) {
                 alert("Stock " + this.model.symbol + " not found");
