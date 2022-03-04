@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { YahooHttpService } from '../yahoo-http.service';
 import { stockDataApple } from '../localData';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
+import { FormData } from '../formdata';
 
 @Component({
   selector: 'app-pick-stocks',
@@ -12,9 +13,7 @@ export class PickStocksComponent implements OnInit {
   private subscription: any;
   private data: any;
 
-  form: FormGroup;
-
-  public availableStocks =
+  public presetSymbols =
     [ 'AAPL'
     , 'AMZN'
     , 'AZN'
@@ -41,26 +40,33 @@ export class PickStocksComponent implements OnInit {
     , 'ZS'
     ];
 
-  public selectedStocks = [this.availableStocks[0]];
 
-  constructor(private server: YahooHttpService, private fb: FormBuilder) {
-    this.form = this.fb.group({
-      checkArray: this.fb.array(['AAPL'])
-    })
+  public presetIntervals =
+    [ '1m'
+    , '5m'
+    , '15m'
+    , '1d'
+    , '1wk'
+    , '1mo'
+    ]
+
+  public presetRanges =
+    [ '1d'
+    , '5d'
+    , '1mo'
+    , '3mo'
+    , '6mo'
+    , '1y'
+    , '5y'
+    , 'max'
+    ]
+
+  model = new FormData(this.presetSymbols[0], this.presetRanges[0], this.presetIntervals[0]);
+
+  constructor(private server: YahooHttpService) {
   }
 
-  toggleStock(symbol: string) {
-    if (this.selectedStocks.includes(symbol)) {
-      this.selectedStocks = this.selectedStocks.filter( x => x !== symbol);
-    } else {
-      this.selectedStocks.push(symbol);
-    }
-    console.log(this.selectedStocks);
-  }
-
-  submitForm() {
-    console.log(this.form.value);
-  }
+  onSubmit() {}
 
   ngOnInit(): void {
     this.data = stockDataApple;

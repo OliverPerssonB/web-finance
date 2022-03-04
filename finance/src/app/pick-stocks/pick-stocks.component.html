@@ -1,16 +1,44 @@
-<h1>Pick stocks</h1>
-<form [formGroup]="form" (ngSubmit)="submitForm()">
-  <div *ngFor="let symbol of availableStocks" >
-    <label>
-      <input
-        type="checkbox"
-        [value]="symbol"
-        [checked]="selectedStocks.includes(symbol)"
-        (change)="toggleStock(symbol)"
-      />
-      {{symbol}}
-    </label>
-  </div>
-  <!-- <button type="submit">Save</button> -->
-</form>
+<div class="container">
+  <h1>Pick stocks</h1>
+
+  <form (ngSubmit)="onSubmit()" #pickStockForm="ngForm">
+    <div>
+      <label for="symbol">Stock symbol: </label>
+      <input type="text" class="form-control" id="symbol"
+             required
+             [(ngModel)]="model.symbol" name="symbol"
+             #symbol="ngModel">
+      <label for="symbol-preset"> Presets: </label>
+      <select class="form-control" id="symbol-preset"
+              required
+              [(ngModel)]="model.symbol" name="symbol"
+              #power="ngModel">
+        <option *ngFor="let stock of presetSymbols" [value]="stock">{{stock}}</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="range">Range: </label>
+      <select class="form-control" id="range"
+              required
+              [(ngModel)]="model.range" name="range"
+              #power="ngModel">
+        <option *ngFor="let stock of presetRanges" [value]="stock">{{stock}}</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="interval">Interval: </label>
+      <select class="form-control" id="interval"
+              required
+              [(ngModel)]="model.interval" name="interval"
+              #power="ngModel">
+        <option *ngFor="let stock of presetIntervals" [value]="stock">{{stock}}</option>
+      </select>
+    </div>
+
+    <button type="submit">Submit</button>
+
+  </form>
+</div>
 
