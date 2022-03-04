@@ -78,10 +78,10 @@ export class PickStocksComponent implements OnInit {
 
   ngOnInit(): void {
     this.data = stockDataApple;
-    console.log("Data available:");
-    console.log("-------------");
-    console.log(this.data);
-    console.log("-------------");
+    // console.log("Data available:");
+    // console.log("-------------");
+    // console.log(this.data);
+    // console.log("-------------");
   }
 
   fetchData() {
