@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: "welcome-page", component: WelcomePageComponent },
   { path: "overview", component: OverviewComponent },
   { path: "charts", component: ChartsComponent },
-  { path: "pick-stocks", component: PickStocksComponent },
+  // { path: "pick-stocks", component: PickStocksComponent },
   { path: '', redirectTo: '/welcome-page', pathMatch: 'full' },
   { path: "**", component: PageNotFoundComponent },
 ];
