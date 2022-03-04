@@ -11,13 +11,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OverviewComponent } from './overview/overview.component';
 import { ChartsComponent } from './charts/charts.component';
 import { PickStocksComponent } from './pick-stocks/pick-stocks.component';
+import { WelcomePageComponent } from './welcome-page/welcome-page.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         OverviewComponent,
         ChartsComponent,
-        PickStocksComponent
+        PickStocksComponent,
+        WelcomePageComponent
     ],
     imports: [
         BrowserModule,
