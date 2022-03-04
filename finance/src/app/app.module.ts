@@ -12,6 +12,7 @@ import { OverviewComponent } from './overview/overview.component';
 import { ChartsComponent } from './charts/charts.component';
 import { PickStocksComponent } from './pick-stocks/pick-stocks.component';
 import { WelcomePageComponent } from './welcome-page/welcome-page.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
     declarations: [
@@ -19,7 +20,8 @@ import { WelcomePageComponent } from './welcome-page/welcome-page.component';
         OverviewComponent,
         ChartsComponent,
         PickStocksComponent,
-        WelcomePageComponent
+        WelcomePageComponent,
+        PageNotFoundComponent
     ],
     imports: [
         BrowserModule,
