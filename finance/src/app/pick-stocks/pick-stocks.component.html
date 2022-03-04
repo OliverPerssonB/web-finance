@@ -13,7 +13,7 @@
               required
               [(ngModel)]="model.symbol" name="symbol"
               #power="ngModel">
-        <option *ngFor="let stock of presetSymbols" [value]="stock">{{stock}}</option>
+        <option *ngFor="let sym of presetSymbols" [value]="sym">{{sym}}</option>
       </select>
     </div>
 
@@ -23,7 +23,7 @@
               required
               [(ngModel)]="model.range" name="range"
               #power="ngModel">
-        <option *ngFor="let stock of presetRanges" [value]="stock">{{stock}}</option>
+        <option *ngFor="let range of presetRanges" [value]="range">{{range}}</option>
       </select>
     </div>
 
@@ -33,7 +33,7 @@
               required
               [(ngModel)]="model.interval" name="interval"
               #power="ngModel">
-        <option *ngFor="let stock of presetIntervals" [value]="stock">{{stock}}</option>
+        <option *ngFor="let intvl of presetIntervals" [value]="intvl">{{intvl}}</option>
       </select>
     </div>
 

@@ -74,7 +74,7 @@ export class PickStocksComponent implements OnInit {
       console.log(obj);
       // @ts-ignore
       if (obj.spark) {
-        console.log("DID NOT FIND STOCK!!!");
+        alert("Stock " + this.model.symbol + " not found");
       }
       console.log("--------");
     });
