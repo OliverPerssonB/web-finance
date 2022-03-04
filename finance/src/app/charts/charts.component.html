@@ -20,5 +20,5 @@
       (change)="updateData()"
     />
   </div>
-  <app-pick-stocks></app-pick-stocks>
+  <app-pick-stocks (newStockEvent)="updateStock($event)"></app-pick-stocks>
 </main>

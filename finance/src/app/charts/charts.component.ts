@@ -33,7 +33,18 @@ export class ChartsComponent implements OnInit {
 
         this.symbol = Object.keys(this.rawData)[0]
         this.data = this.formatData(this.rawData.AAPL)
-        console.log(this.data)
+        // @ts-ignore
+        this.ys = Array.from(this.data).map(d => d.y)
+        this.createSvg()
+        this.drawLineChart(this.data)
+    }
+
+    updateStock(newStock) {
+        this.rawData = newStock;
+        // this.data = this.formatData(this.rawData.AAPL)
+        // this.updateData()
+        this.symbol = Object.keys(this.rawData)[0]
+        this.data = this.formatData(this.rawData[this.symbol])
         // @ts-ignore
         this.ys = Array.from(this.data).map(d => d.y)
         this.createSvg()
@@ -78,6 +89,9 @@ export class ChartsComponent implements OnInit {
     }
 
     private createSvg(): void {
+        if (this.svg) {
+            d3.select('svg').remove()
+        }
         this.svg = d3.select('figure#chart')
             .append('svg')
             .attr('width', this.width + this.margin.left + this.margin.right)
