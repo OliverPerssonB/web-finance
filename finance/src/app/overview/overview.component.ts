@@ -28,9 +28,13 @@ export class OverviewComponent implements OnInit {
     const results = this.data?.marketSummaryResponse?.result;
     if (results) {
       this.displayData = results.map(exchangeObj => {
-        return exchangeObj.fullExchangeName;
+        return this.handleExchangeObj(exchangeObj);
       })
     }
+  }
+
+  handleExchangeObj(obj) {
+    return obj.fullExchangeName;
   }
 
   fetchData() {

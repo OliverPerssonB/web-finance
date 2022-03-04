@@ -14,51 +14,51 @@ export class PickStocksComponent implements OnInit {
   private data: any;
 
   public presetSymbols =
-    [ 'AAPL'
-    , 'AMZN'
-    , 'AZN'
-    , 'BIGC'
-    , 'DKNG'
-    , 'DPHC'
-    , 'FCX'
-    , 'GME'
-    , 'GOOG'
-    , 'IBIO'
-    , 'ITCI'
-    , 'JCPNQ'
-    , 'LAKE'
-    , 'LCA'
-    , 'MSFT'
-    , 'NCNO'
-    , 'OTRK'
-    , 'PRPO'
-    , 'RH'
-    , 'SLQT'
-    , 'TIF'
-    , 'TRIL'
-    , 'WKHS'
-    , 'ZS'
+    ['AAPL'
+      , 'AMZN'
+      , 'AZN'
+      , 'BIGC'
+      , 'DKNG'
+      , 'DPHC'
+      , 'FCX'
+      , 'GME'
+      , 'GOOG'
+      , 'IBIO'
+      , 'ITCI'
+      , 'JCPNQ'
+      , 'LAKE'
+      , 'LCA'
+      , 'MSFT'
+      , 'NCNO'
+      , 'OTRK'
+      , 'PRPO'
+      , 'RH'
+      , 'SLQT'
+      , 'TIF'
+      , 'TRIL'
+      , 'WKHS'
+      , 'ZS'
     ];
 
 
   public presetIntervals =
-    [ '1m'
-    , '5m'
-    , '15m'
-    , '1d'
-    , '1wk'
-    , '1mo'
+    ['1m'
+      , '5m'
+      , '15m'
+      , '1d'
+      , '1wk'
+      , '1mo'
     ]
 
   public presetRanges =
-    [ '1d'
-    , '5d'
-    , '1mo'
-    , '3mo'
-    , '6mo'
-    , '1y'
-    , '5y'
-    , 'max'
+    ['1d'
+      , '5d'
+      , '1mo'
+      , '3mo'
+      , '6mo'
+      , '1y'
+      , '5y'
+      , 'max'
     ]
 
   model = new FormData(this.presetSymbols[0], this.presetRanges[0], this.presetIntervals[0]);
@@ -66,7 +66,15 @@ export class PickStocksComponent implements OnInit {
   constructor(private server: YahooHttpService) {
   }
 
-  onSubmit() {}
+  onSubmit() {
+    const stockData = this.server.getStock(this.model);
+    this.subscription = stockData.subscribe(obj => {
+      console.log("Received data from server:");
+      console.log("--------");
+      console.log(obj);
+      console.log("--------");
+    });
+  }
 
   ngOnInit(): void {
     this.data = stockDataApple;
@@ -77,7 +85,7 @@ export class PickStocksComponent implements OnInit {
   }
 
   fetchData() {
-    let data = this.server.getStock();
+    let data = this.server.getStock(this.model);
     this.subscription = data.subscribe(obj => {
       console.log("Received data from server:");
       console.log("--------");
