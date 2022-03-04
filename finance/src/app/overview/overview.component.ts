@@ -11,6 +11,7 @@ import { overviewData } from '../localData';
 export class OverviewComponent implements OnInit {
   private subscription: any;
   private data: any;
+  public displayData: any[] = [];
 
   constructor(private server: YahooHttpService) { }
 
@@ -20,6 +21,16 @@ export class OverviewComponent implements OnInit {
     console.log("-------------");
     console.log(this.data);
     console.log("-------------");
+    this.formatData();
+  }
+
+  formatData() {
+    const results = this.data?.marketSummaryResponse?.result;
+    if (results) {
+      this.displayData = results.map(exchangeObj => {
+        return exchangeObj.fullExchangeName;
+      })
+    }
   }
 
   fetchData() {
