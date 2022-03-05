@@ -32,14 +32,14 @@ export class YahooHttpService {
         return this.http.get(url, { headers: header, params: params });
     }
 
-    getStock(formatData: FormData = undefined) {
-        if (formatData.symbol && formatData.range && formatData.interval) {
+    getStock(formData: FormData | undefined = undefined) {
+        if (formData?.symbol && formData?.range && formData?.interval) {
             let header = new HttpHeaders();
             header = header.append("X-API-KEY", this.apiKeys[Math.floor(Math.random() * this.apiKeys.length)]);
             let params = new HttpParams();
-            params = params.append("interval", formatData.interval);
-            params = params.append("range", formatData.range);
-            params = params.append("symbols", formatData.symbol);
+            params = params.append("interval", formData!.interval);
+            params = params.append("range", formData!.range);
+            params = params.append("symbols", formData!.symbol);
             return this.http.get(this.yahooStockUrl, { headers: header, params: params });
         } else {
             return this.getDefaultAppleStock();

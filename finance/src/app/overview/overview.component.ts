@@ -4,57 +4,57 @@ import { YahooHttpService } from '../yahoo-http.service';
 import { overviewData } from '../localData';
 
 @Component({
-  selector: 'app-overview',
-  templateUrl: './overview.component.html',
-  styleUrls: ['./overview.component.css']
+    selector: 'app-overview',
+    templateUrl: './overview.component.html',
+    styleUrls: ['./overview.component.css']
 })
 export class OverviewComponent implements OnInit {
-  private subscription: any;
-  private data: any;
-  public displayData: any[] = [];
+    private subscription: any;
+    private data: any;
+    public displayData: any[] = [];
 
-  constructor(private server: YahooHttpService) { }
+    constructor(private server: YahooHttpService) { }
 
-  ngOnInit(): void {
-    this.data = overviewData;
-    this.formatData();
-    console.log("Data available:");
-    console.log("-------------");
-    console.log(this.data);
-    console.log("-------------");
+    ngOnInit(): void {
+        this.data = overviewData;
+        this.formatData();
+        console.log("Data available:");
+        console.log("-------------");
+        console.log(this.data);
+        console.log("-------------");
 
-    // this.fetchData();
-  }
-
-  formatData() {
-    const results = this.data?.marketSummaryResponse?.result;
-    if (results) {
-      this.displayData = results.map(exchangeObj => {
-        return this.handleExchangeObj(exchangeObj);
-      })
+        // this.fetchData();
     }
-  }
 
-  handleExchangeObj(obj) {
-    return obj;
-  }
-
-  fetchData() {
-    let data = this.server.getMarketSummary();
-    this.subscription = data.subscribe(obj => {
-      console.log("Received data from server:");
-      console.log("--------");
-      console.log(obj);
-      console.log("--------");
-      this.data = obj;
-      this.formatData();
-    });
-  }
-
-  onDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    formatData() {
+        const results = this.data?.marketSummaryResponse?.result;
+        if (results) {
+            this.displayData = results.map((exchangeObj: any) => {
+                return this.handleExchangeObj(exchangeObj);
+            })
+        }
     }
-  }
+
+    handleExchangeObj(obj: any) {
+        return obj;
+    }
+
+    fetchData() {
+        let data = this.server.getMarketSummary();
+        this.subscription = data.subscribe(obj => {
+            console.log("Received data from server:");
+            console.log("--------");
+            console.log(obj);
+            console.log("--------");
+            this.data = obj;
+            this.formatData();
+        });
+    }
+
+    onDestroy() {
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
+    }
 
 }

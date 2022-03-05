@@ -23,9 +23,9 @@ export class ChartsComponent implements OnInit {
     private margin: any = { top: 20, right: 0, bottom: 50, left: 0 };
     private width: number = 700 - this.margin.left - this.margin.right;
     private height: number = 300 - this.margin.top - this.margin.bottom;
-    private data;
-    private ys: number[];
-    symbol: string;
+    private data: Datum[] = [];
+    private ys: number[] = [];
+    symbol: string = '';
     input: number = 1;
 
     constructor(private server: YahooHttpService) { }
@@ -45,7 +45,7 @@ export class ChartsComponent implements OnInit {
         this.drawLineChart(this.data)
     }
 
-    updateStock(newStock) {
+    updateStock(newStock: any) {
         this.input = 1
         this.rawData = newStock;
         this.symbol = Object.keys(this.rawData)[0]
@@ -85,7 +85,7 @@ export class ChartsComponent implements OnInit {
         let formattedData: Datum[] = []
         let dateFormat = d3.timeParse('%s')
         for (let i = 0; i < data.timestamp.length; i++) {
-            let datum: Datum = { x: dateFormat(data.timestamp[i]), y: data.close[i] }
+            let datum: Datum = { x: dateFormat(data.timestamp[i]) as Date, y: data.close[i] }
             formattedData.push(datum)
         }
         return formattedData
@@ -103,7 +103,7 @@ export class ChartsComponent implements OnInit {
             .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`)
     }
 
-    private drawLineChart(data: any[]): void {
+    private drawLineChart(data: Datum[]): void {
         // Update line, area, and markers
         let { xAxis, yAxis } = this.updateChart(data);
 
@@ -122,18 +122,18 @@ export class ChartsComponent implements OnInit {
             .attr('font-size', '10px')
     }
 
-    private updateChart(data: any[]) {
+    private updateChart(data: Datum[]) {
         let n = data.length;
 
         // Scales
         let xTimeScale = d3.scaleTime()
-            .domain(d3.extent(data, d => d.x.getTime()))
+            .domain(<[Date, Date]>d3.extent(data, d => d.x)) //TODO: VERIFY W chart
             .range([0, this.width])
         let xScale = d3.scaleLinear()
             .domain([0, n - 1])
             .range([0, this.width]);
-        let yScale = d3.scaleLinear<number>()
-            .domain(d3.extent(data, d => d.y))
+        let yScale = d3.scaleLinear()
+            .domain(<[number, number]>d3.extent(data, d => d.y))
             .range([this.height, 0]);
 
         // Define axes, line, and area under curve
@@ -181,12 +181,12 @@ export class ChartsComponent implements OnInit {
             const radius = 3
             let circles = this.svg.selectAll('circle').data(data)
             circles.join('circle').transition(t)
-                .attr('cx', (d, i) => xTimeScale(d.x))
-                .attr('cy', d => yScale(d.y))
+                .attr('cx', (d: Datum) => xTimeScale(d.x))
+                .attr('cy', (d: Datum) => yScale(d.y))
                 .attr('r', radius)
 
-            circles.on('mouseover', function (event, d) {
-                d3.select(this)
+            circles.on('mouseover', function (event: any, d: Datum) {
+                d3.select(event.target)
                     .transition()
                     .duration(200)
                     .attr('r', radius * 2)
@@ -199,8 +199,8 @@ export class ChartsComponent implements OnInit {
                     .select('#value')
                     .html(() => '<b>Price</b> $' + d.y + '<br><b>Date</b> ' + d3.timeFormat('%b %d')(d.x))
                 d3.select('#tooltip').classed('hidden', false)
-            }).on('mouseout', function (event, d) {
-                d3.select(this)
+            }).on('mouseout', function (event: any, d: Datum) {
+                d3.select(event.target)
                     .transition()
                     .duration(200)
                     .attr('r', radius)
