@@ -4,11 +4,18 @@ import { stockDataApple } from '../localData';
 import * as d3 from 'd3'
 import { axisBottom, svg } from 'd3'
 
+interface Datum {
+    x: Date,
+    y: number
+}
+
 @Component({
     selector: 'app-charts',
     templateUrl: './charts.component.html',
     styleUrls: ['./charts.component.css']
 })
+
+
 export class ChartsComponent implements OnInit {
     private subscription: any;
     private rawData: any;
@@ -33,8 +40,7 @@ export class ChartsComponent implements OnInit {
 
         this.symbol = Object.keys(this.rawData)[0]
         this.data = this.formatData(this.rawData.AAPL)
-        // @ts-ignore
-        this.ys = Array.from(this.data).map(d => d.y)
+        this.ys = Array.from(this.data).map((d: Datum) => d.y)
         this.createSvg()
         this.drawLineChart(this.data)
     }
@@ -42,21 +48,17 @@ export class ChartsComponent implements OnInit {
     updateStock(newStock) {
         this.input = 1
         this.rawData = newStock;
-        // this.data = this.formatData(this.rawData.AAPL)
-        // this.updateData()
         this.symbol = Object.keys(this.rawData)[0]
         this.data = this.formatData(this.rawData[this.symbol])
-        // @ts-ignore
-        this.ys = Array.from(this.data).map(d => d.y)
+        this.ys = Array.from(this.data).map((d: Datum) => d.y)
         this.createSvg()
         this.drawLineChart(this.data)
     }
 
-    updateData() {
+    updateSmoothing() {
         let ysNew = this.movingAverage(this.ys, this.input)
-        let smoothData = Array.from(this.data)
+        let smoothData: Datum[] = Array.from(this.data)
         for (let i = 0; i < smoothData.length; i++) {
-            // @ts-ignore
             smoothData[i].y = ysNew[i]
         }
         this.updateChart(smoothData)
@@ -80,10 +82,10 @@ export class ChartsComponent implements OnInit {
     }
 
     private formatData(data: any) {
-        let formattedData = []
+        let formattedData: Datum[] = []
         let dateFormat = d3.timeParse('%s')
         for (let i = 0; i < data.timestamp.length; i++) {
-            let datum = { x: dateFormat(data.timestamp[i]), y: data.close[i] }
+            let datum: Datum = { x: dateFormat(data.timestamp[i]), y: data.close[i] }
             formattedData.push(datum)
         }
         return formattedData
@@ -127,11 +129,10 @@ export class ChartsComponent implements OnInit {
         let xTimeScale = d3.scaleTime()
             .domain(d3.extent(data, d => d.x.getTime()))
             .range([0, this.width])
-        // .nice()
         let xScale = d3.scaleLinear()
             .domain([0, n - 1])
             .range([0, this.width]);
-        let yScale = d3.scaleLinear()
+        let yScale = d3.scaleLinear<number>()
             .domain(d3.extent(data, d => d.y))
             .range([this.height, 0]);
 
@@ -141,7 +142,6 @@ export class ChartsComponent implements OnInit {
             .tickSizeOuter(0)
             .tickPadding(5)
             .ticks(4)
-        // .tickFormat(d3.timeFormat('%b %d'));
 
         let yAxis = d3.axisLeft(yScale)
             .ticks(4)
@@ -150,21 +150,14 @@ export class ChartsComponent implements OnInit {
             .tickPadding(5);
 
         // Add line, area under curve, and markers to svg
-        // @ts-ignore
-        let line = d3.line()
-            // @ts-ignore
-            .x((d, i) => xTimeScale(d.x))
-            // @ts-ignore
-            .y(d => yScale(d.y));
-        // @ts-ignore
-        let area = d3.area()
-            // @ts-ignore
-            .x((d, i) => xTimeScale(d.x))
+        let line = d3.line<Datum>()
+            .x((d: Datum) => xTimeScale(d.x))
+            .y((d: Datum) => yScale(d.y));
+        let area = d3.area<Datum>()
+            .x((d: Datum) => xTimeScale(d.x))
             .y0(this.height)
-            // @ts-ignore
-            .y1(d => yScale(d.y));
+            .y1((d: Datum) => yScale(d.y));
 
-        // const transitionTime = 3000;
         const t = d3.transition().duration(300).ease(d3.easeLinear)
         this.svg.selectAll('.line')
             .data([data])
@@ -184,7 +177,7 @@ export class ChartsComponent implements OnInit {
             .attr('fill', '#751fa2')
             .attr('opacity', 0.1);
 
-        if (data.length < 100) { // Markers clutter if too much data
+        if (data.length < 100) { // Don't add markers if too much data
             const radius = 3
             let circles = this.svg.selectAll('circle').data(data)
             circles.join('circle').transition(t)
@@ -201,12 +194,9 @@ export class ChartsComponent implements OnInit {
                     .attr('stroke', 'black')
 
                 d3.select('#tooltip')
-                    // .transition()
-                    // .duration(200)
                     .style('left', event.x + "px")
                     .style('top', event.y + "px")
                     .select('#value')
-                    // @ts-ignore
                     .html(() => '<b>Price</b> $' + d.y + '<br><b>Date</b> ' + d3.timeFormat('%b %d')(d.x))
                 d3.select('#tooltip').classed('hidden', false)
             }).on('mouseout', function (event, d) {
