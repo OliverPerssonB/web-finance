@@ -126,7 +126,7 @@ export class ChartsComponent implements OnInit {
         // Scales
         let xTimeScale = d3.scaleTime()
             .domain(d3.extent(data, d => d.x.getTime()))
-            .range([0, this.width]);
+            .range([0, this.width])
         // .nice()
         let xScale = d3.scaleLinear()
             .domain([0, n - 1])
@@ -141,7 +141,7 @@ export class ChartsComponent implements OnInit {
             .tickSizeOuter(0)
             .tickPadding(5)
             .ticks(4)
-            .tickFormat(d3.timeFormat('%b %d'));
+        // .tickFormat(d3.timeFormat('%b %d'));
 
         let yAxis = d3.axisLeft(yScale)
             .ticks(4)
