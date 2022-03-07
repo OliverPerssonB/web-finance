@@ -51,6 +51,7 @@ export class OverviewComponent implements OnInit {
           this.fetchDataServerCatchError(retires - 1);
         } else {
           console.log(`Many retries not working, stopping. Please check API keys valid!`);
+          this.fetchDataLocal();
         }
       }
     });
