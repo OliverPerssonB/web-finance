@@ -1,14 +1,15 @@
-<!-- https://material.angular.io/components/card/overview -->
-<!-- use material card to display each exchange? -->
-
 <div>
-  <div *ngFor="let exchange of displayData">
-    <h2>{{exchange.fullExchangeName}}</h2>
-    <p>market state: {{exchange.marketState | lowercase}}</p>
-    <p>price: {{exchange.regularMarketPrice.fmt}}</p>
-    <p>region: {{exchange.region}}</p>
-    <p>type: {{exchange.quoteType}}</p>
-    <p>time zone: {{exchange.exchangeTimezoneName}}</p>
-    <hr>
-  </div>
+
+  <mat-card *ngFor="let exchange of displayData">
+    <mat-card-title>{{exchange.fullExchangeName}}</mat-card-title>
+    <mat-card-content>
+      <p>market state: {{exchange.marketState | lowercase}}</p>
+      <p>price: {{exchange.regularMarketPrice.fmt}}</p>
+      <p>region: {{exchange.region}}</p>
+      <p>type: {{exchange.quoteType}}</p>
+      <p>time zone: {{exchange.exchangeTimezoneName}}</p>
+    </mat-card-content>
+    <mat-divider></mat-divider>
+  </mat-card>
+
 </div>

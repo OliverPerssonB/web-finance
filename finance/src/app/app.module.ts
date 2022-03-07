@@ -13,6 +13,8 @@ import { ChartsComponent } from './charts/charts.component';
 import { PickStocksComponent } from './pick-stocks/pick-stocks.component';
 import { WelcomePageComponent } from './welcome-page/welcome-page.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
     declarations: [
@@ -32,6 +34,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
         HttpClientModule,
         FormsModule,
         ReactiveFormsModule,
+        MatCardModule,
+        MatDividerModule,
     ],
     providers: [],
     bootstrap: [AppComponent]
