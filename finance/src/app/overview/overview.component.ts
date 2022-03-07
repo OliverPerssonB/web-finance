@@ -16,13 +16,7 @@ export class OverviewComponent implements OnInit {
     constructor(private server: YahooHttpService) { }
 
     ngOnInit(): void {
-        this.data = overviewData;
-        this.formatData();
-        console.log("Data available:");
-        console.log("-------------");
-        console.log(this.data);
-        console.log("-------------");
-
+        this.fetchDataLocal();
         // this.fetchData();
     }
 
@@ -49,6 +43,15 @@ export class OverviewComponent implements OnInit {
             this.data = obj;
             this.formatData();
         });
+    }
+
+    fetchDataLocal() {
+        this.data = overviewData;
+        this.formatData();
+        console.log("Data available:");
+        console.log("-------------");
+        console.log(this.data);
+        console.log("-------------");
     }
 
     onDestroy() {
