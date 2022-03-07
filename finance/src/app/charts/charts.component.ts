@@ -120,6 +120,8 @@ export class ChartsComponent implements OnInit {
             .style('stroke', 'none')
         this.svg.selectAll('text')
             .attr('font-size', '10px')
+
+        this.updateSmoothing()
     }
 
     private updateChart(data: Datum[]) {
