@@ -70,7 +70,7 @@ export class PickStocksComponent implements OnInit {
   constructor(private server: YahooHttpService) {
   }
 
-  onSubmit(retires = 10) {
+  onSubmit(retries = 10) {
     const stockData = this.server.getStock(this.model);
     this.subscription = stockData.subscribe({
       next: (obj) => {
@@ -79,16 +79,16 @@ export class PickStocksComponent implements OnInit {
         console.log(obj);
         // @ts-ignore
         if (obj.spark) {
-          alert("Stock " + this.model.symbol + " not found");
+          alert(`Stock ${this.model.symbol} not found`);
         } else {
           this.newStockEvent.emit(obj)
         }
         console.log("--------");
       },
       error: (err) => {
-        if (retires > 0) {
-          console.log(`Error when sending HTTP, trying again! Retry left: ${retires}`);
-          this.onSubmit(retires - 1);
+        if (retries > 0) {
+          console.log(`Error when sending HTTP, trying again! Retry left: ${retries}`);
+          this.onSubmit(retries - 1);
         } else {
           console.log(`Many retries not working, stopping. Please check API keys valid!`);
           this.newStockEvent.emit(this.data);
