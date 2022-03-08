@@ -2,9 +2,11 @@
   <h1>Pick stocks</h1>
 
   <form (ngSubmit)="onSubmit()" #pickStockForm="ngForm">
-    <div>
-      <label for="symbol">Stock symbol: </label>
+    <p>
+    <mat-form-field>
+      <mat-label for="symbol">Stock symbol</mat-label>
       <input
+        matInput
         type="text"
         class="form-control"
         id="symbol"
@@ -13,8 +15,10 @@
         name="symbol"
         #symbol="ngModel"
       />
-      <label for="symbol-preset"> Presets: </label>
-      <select
+    </mat-form-field>
+    <mat-form-field style="margin-left: 1em">
+      <mat-label for="symbol-preset">Presets</mat-label>
+      <mat-select
         class="form-control"
         id="symbol-preset"
         required
@@ -22,15 +26,17 @@
         name="symbol"
         #power="ngModel"
       >
-        <option *ngFor="let sym of presetSymbols" [value]="sym">
+        <mat-option *ngFor="let sym of presetSymbols" [value]="sym">
           {{ sym }}
-        </option>
-      </select>
-    </div>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    </p>
 
-    <div>
-      <label for="range">Period: </label>
-      <select
+    <p>
+    <mat-form-field>
+      <mat-label for="range">Period</mat-label>
+      <mat-select
         class="form-control"
         id="range"
         required
@@ -38,15 +44,17 @@
         name="range"
         #power="ngModel"
       >
-        <option *ngFor="let range of presetRanges" [value]="range">
+        <mat-option *ngFor="let range of presetRanges" [value]="range">
           {{ range }}
-        </option>
-      </select>
-    </div>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    </p>
 
-    <div>
-      <label for="interval">Sampling rate: </label>
-      <select
+    <p>
+    <mat-form-field>
+      <mat-label for="interval">Sampling rate</mat-label>
+      <mat-select
         class="form-control"
         id="interval"
         required
@@ -54,12 +62,15 @@
         name="interval"
         #power="ngModel"
       >
-        <option *ngFor="let intvl of presetIntervals" [value]="intvl">
+        <mat-option *ngFor="let intvl of presetIntervals" [value]="intvl">
           {{ intvl }}
-        </option>
-      </select>
-    </div>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    </p>
 
-    <button type="submit">Submit</button>
+    <p>
+    <button mat-raised-button color="primary" type="submit">Submit</button>
+    </p>
   </form>
 </div>

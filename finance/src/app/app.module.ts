@@ -15,6 +15,9 @@ import { WelcomePageComponent } from './welcome-page/welcome-page.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
     declarations: [
@@ -36,6 +39,9 @@ import { MatDividerModule } from '@angular/material/divider';
         ReactiveFormsModule,
         MatCardModule,
         MatDividerModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
     ],
     providers: [],
     bootstrap: [AppComponent]

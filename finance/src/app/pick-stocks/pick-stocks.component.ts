@@ -3,6 +3,9 @@ import { YahooHttpService } from '../yahoo-http.service';
 import { stockDataApple } from '../localData';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
 import { FormData } from '../formdata';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
 
 @Component({
   selector: 'app-pick-stocks',
