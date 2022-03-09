@@ -15,9 +15,11 @@ import { WelcomePageComponent } from './welcome-page/welcome-page.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import {MatSelectModule} from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatGridListModule } from '@angular/material/grid-list';
+
 
 @NgModule({
     declarations: [
@@ -42,6 +44,7 @@ import {MatSelectModule} from '@angular/material/select';
         MatFormFieldModule,
         MatInputModule,
         MatSelectModule,
+        MatGridListModule,
     ],
     providers: [],
     bootstrap: [AppComponent]

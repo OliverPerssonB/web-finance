@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, retry, retryWhen, tap } from 'rxjs';
 import { YahooHttpService } from '../yahoo-http.service';
 import { overviewData } from '../localData';
+
 
 @Component({
   selector: 'app-overview',
