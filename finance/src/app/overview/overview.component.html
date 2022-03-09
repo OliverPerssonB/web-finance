@@ -1,16 +1,17 @@
-<mat-grid-list cols="6">
-
-  <mat-grid-tile *ngFor="let exchange of displayData">
-    <mat-card class="card">
-      <mat-card-title>{{exchange.fullExchangeName}}</mat-card-title>
-      <mat-card-content>
-        <p>market state: {{exchange.marketState | lowercase}}</p>
-        <p>price: {{exchange.regularMarketPrice.fmt}}</p>
-        <p>region: {{exchange.region}}</p>
-        <p>type: {{exchange.quoteType}}</p>
-        <p>time zone: {{exchange.exchangeTimezoneName}}</p>
-      </mat-card-content>
-    </mat-card>
-  </mat-grid-tile>
-
-</mat-grid-list>
+<div fxLayout="row wrap" fxLayoutAlign="center center">
+  <mat-card
+    *ngFor="let exchange of displayData"
+    class="card"
+    style="width: 300px; margin: 1rem; padding: 2rem"
+  >
+    <mat-card-title>{{ exchange.fullExchangeName }}</mat-card-title>
+    <mat-card-content>
+      <p>Market state: {{ exchange.marketState | lowercase }}</p>
+      <p>Price: {{ exchange.regularMarketPrice.fmt }}</p>
+      <p>Region: {{ exchange.region }}</p>
+      <p>Type: {{ exchange.quoteType }}</p>
+      <p>Time zone: {{ exchange.exchangeTimezoneName }}</p>
+    </mat-card-content>
+    <!-- <mat-divider></mat-divider> -->
+  </mat-card>
+</div>

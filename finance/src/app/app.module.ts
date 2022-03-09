@@ -18,8 +18,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatGridListModule } from '@angular/material/grid-list';
-
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
     declarations: [
@@ -44,7 +43,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
         MatFormFieldModule,
         MatInputModule,
         MatSelectModule,
-        MatGridListModule,
+        FlexLayoutModule,
     ],
     providers: [],
     bootstrap: [AppComponent]

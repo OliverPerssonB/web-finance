@@ -3,74 +3,74 @@
 
   <form (ngSubmit)="onSubmit()" #pickStockForm="ngForm">
     <p>
-    <mat-form-field>
-      <mat-label for="symbol">Stock symbol</mat-label>
-      <input
-        matInput
-        type="text"
-        class="form-control"
-        id="symbol"
-        required
-        [(ngModel)]="model.symbol"
-        name="symbol"
-        #symbol="ngModel"
-      />
-    </mat-form-field>
-    <mat-form-field style="margin-left: 1em">
-      <mat-label for="symbol-preset">Presets</mat-label>
-      <mat-select
-        class="form-control"
-        id="symbol-preset"
-        required
-        [(ngModel)]="model.symbol"
-        name="symbol"
-        #power="ngModel"
-      >
-        <mat-option *ngFor="let sym of presetSymbols" [value]="sym">
-          {{ sym }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label for="symbol">Stock symbol</mat-label>
+        <input
+          matInput
+          type="text"
+          class="form-control"
+          id="symbol"
+          required
+          [(ngModel)]="model.symbol"
+          name="symbol"
+          #symbol="ngModel"
+        />
+      </mat-form-field>
+      <mat-form-field style="margin-left: 1em">
+        <mat-label for="symbol-preset">Presets</mat-label>
+        <mat-select
+          class="form-control"
+          id="symbol-preset"
+          required
+          [(ngModel)]="model.symbol"
+          name="symbol"
+          #power="ngModel"
+        >
+          <mat-option *ngFor="let sym of presetSymbols" [value]="sym">
+            {{ sym }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </p>
 
     <p>
-    <mat-form-field>
-      <mat-label for="range">Period</mat-label>
-      <mat-select
-        class="form-control"
-        id="range"
-        required
-        [(ngModel)]="model.range"
-        name="range"
-        #power="ngModel"
-      >
-        <mat-option *ngFor="let range of presetRanges" [value]="range">
-          {{ range }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label for="range">Period</mat-label>
+        <mat-select
+          class="form-control"
+          id="range"
+          required
+          [(ngModel)]="model.range"
+          name="range"
+          #power="ngModel"
+        >
+          <mat-option *ngFor="let range of presetRanges" [value]="range">
+            {{ range }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </p>
 
     <p>
-    <mat-form-field>
-      <mat-label for="interval">Sampling rate</mat-label>
-      <mat-select
-        class="form-control"
-        id="interval"
-        required
-        [(ngModel)]="model.interval"
-        name="interval"
-        #power="ngModel"
-      >
-        <mat-option *ngFor="let intvl of presetIntervals" [value]="intvl">
-          {{ intvl }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label for="interval">Sampling rate</mat-label>
+        <mat-select
+          class="form-control"
+          id="interval"
+          required
+          [(ngModel)]="model.interval"
+          name="interval"
+          #power="ngModel"
+        >
+          <mat-option *ngFor="let intvl of presetIntervals" [value]="intvl">
+            {{ intvl }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </p>
 
     <p>
-    <button mat-raised-button color="primary" type="submit">Submit</button>
+      <button mat-raised-button color="primary" type="submit">Submit</button>
     </p>
   </form>
 </mat-card>
