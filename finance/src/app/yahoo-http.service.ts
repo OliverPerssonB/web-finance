@@ -11,11 +11,9 @@ export class YahooHttpService {
     private yahooSummaryUrl = this.yahooUrl + "/v6/finance/quote/marketSummary";
     private yahooStockUrl = this.yahooUrl + "/v8/finance/spark";
     private apiKeys = [
-        "QMzocjYt7553Y395S5Z0B5yTfjromREd6N4Ua7ce",
-        "jzdoOBxZgw9xCkHYCjA17VN1kOUXFdZ6CVYAUo7e",
-        "IiPM1JQtAa7c9WuLwlUsu5u5nsqJo8tDNZZvR0k2",
-        "KHtNBll61I2jhMgMaL9Xl5fASrbQ90eBV3sYGrxc",
-        "cfZAuq3fKQ79MeT5RXSJJ5wsbTQg8BLDaTrITqfg"
+        "cfZAuq3fKQ79MeT5RXSJJ5wsbTQg8BLDaTrITqfg",
+        "ouR0FBmXTq8t7Kr0h5eDb7rZkRCToj7V3Z9gsrAE",
+        "eApQZNcUV09u8SjYaoWRLapE32iVOIRybn4WZVu1",
     ]
 
     constructor(private http: HttpClient) { }
